@@ -14,7 +14,6 @@ env:
     - secure: fxhXwUgIOCUaNXXjMM3g3h06eEckT5zv7irPQ2EWyReOlbiHSLeYJiK6OoF6nhlR0a4v2TDVYzDxZvcOwPpbwHL52+alF8RndO2Ozdqcv238bMpElf4ywW2wakZUV6Tvjy4dSLZa0F2Q0quHLqDA2qB8SvG3qSi1FeCzx6rpjLOJ8fTP/zQR0f2TojG5MzZqIX9xuaGR6ROI6flIHs0G3azM9Mn5lmfObOXPweCIWle++rND6fUiRLxzMTIVywKCRs1KDpUnumRad10/uCJBWSNND1BQkGf1W11C6hXSFi67tPzQHF75WUr7GkI8OHma1+OdtPXbYXNy9odAgKDvvAyozQQZtniBYd6m37gyQiWB/NBg2Txn26Dg4xZExxMYeyy5fPxli/MrcB2Etk3yyVWS5QuW2gt474+GVhoet0lzJunTfr/pjL6lx/ACP9z2+aQHMMJPlsfQBZSFsuSz3tXwl/b58PTLpyL33pPIvs6alxP0kS+mT53fFHgacf+18ux4epXWGOn0oVWzuO+YZyH9GV893gTjlUZ8UYrisCT4wsZ83zY+XzHlKZlwxNHLpc36SJC88RzEhx1zFAaTARqzKmcs7k64SVYz+vWXngy1Sh19Vqp0Gjn8wz34he4W5ITW+7LIvH9mJiR7nj50Lip9EwqseRHVwY/zJpMnDzg=
     - secure: NMA2VppakqzPrdkiBm5Mbljn/FuMv0rcV24B+UcXgH/cy7Wnw75KdMrveSawJ9pwk24jSsCRv1r/E1F7CAMX8vIC03y9KCQAW/ZAEYeY+Jv/33pHuptif3HFIrf4P7GB69eDuAair95sCClh8IWIVNZ89f/mbNujXKMNXoKhAw3JM+TPZyDuJ7yStWcF+8QwYRf78EZED887fzw+9+khlWH8WAcUbo14qIZJYjVr1VIORFSU6HjY/eARf1smfmya3XtQJZB5KHwjcTdFLqeX8YrbiXoZXZEVYpe3sq3WTk9kotV3FCIGFkLB7wskLLWLF29PBchjTiGKknt9w6enjkqGKuYXuh8d4be/WcBHBAYmgpytu2fSAcHcIuyCFd/r9jC+1V8EE1cBWnr3uBGt2s6riVhFLoaFeBQe9PZBpCKg3iCpkQ26E0emqw6luf886ng/HQnCzHWakh0KBMMGymndh3/BE2cxkhpvk+Svp+dmt6K0tuN6yM4Dxz5xu5zYHPHFP2e09P5DfEIFtjyP4FpyBFUQqnfNjozOQy5PvoWvMcxPXcCJZsfagyBK/zORReR+8f0nkNaGSCmO0inXKbbDuAx3QWq1fkHjAutzL/DnrkU+Paaeg5qsXacgm7pwRrPqU5WoaKyfeIqVFv5neOPzMtfm1LlLICp3riCc+3A=
 stages:
-  - name: lint
   - name: test
   - name: deploy
     if: branch = master AND type != pull_request
@@ -41,9 +40,9 @@ after_success:
 jobs:
   fast_finish: true
   allow_failures:
-    - if: stage = lint OR os = windows OR os = osx
+    - if: os = windows OR os = osx
   include:
-    - stage: lint
+    - stage: test
       dist: xenial
       install:
         - pip install black==19.10b0 isort==4.3.21
