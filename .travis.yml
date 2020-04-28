@@ -39,8 +39,9 @@ after_success:
   - coveralls
   - bash <(curl -s https://codecov.io/bash)
 jobs:
+  fast_finish: true
   allow_failures:
-    - if: os = windows OR os = osx
+    - if: stage = lint OR os = windows OR os = osx
   include:
     - stage: lint
       dist: xenial
