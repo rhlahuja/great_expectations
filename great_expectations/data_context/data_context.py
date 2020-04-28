@@ -103,7 +103,7 @@ class BaseDataContext(object):
     GE_DIR = "great_expectations"
     GE_YML = "great_expectations.yml"
     GE_EDIT_NOTEBOOK_DIR = GE_UNCOMMITTED_DIR
-    FALSEY_STRINGS = ["FALSE", "False", "f", "F", "0"]
+    FALSEY_STRINGS = ["FALSE", "false", "False", "f", "F", "0"]
     GLOBAL_CONFIG_PATHS = [
         os.path.expanduser("~/.great_expectations/great_expectations.conf"),
         "/etc/great_expectations.conf"
@@ -279,11 +279,18 @@ class BaseDataContext(object):
                 logger.warning("GE_USAGE_STATS environment variable must be one of: {}".format(BaseDataContext.FALSEY_STRINGS))
         for config_path in BaseDataContext.GLOBAL_CONFIG_PATHS:
             config = configparser.ConfigParser()
+            states = config.BOOLEAN_STATES
+            for falsey_string in BaseDataContext.FALSEY_STRINGS:
+                states[falsey_string] = False
+            states["TRUE"] = True
+            states["True"] = True
+            config.BOOLEAN_STATES = states
             config.read(config_path)
             try:
-                if not config.getboolean("anonymous_usage_statistics", "enabled"):
+                if config.getboolean("anonymous_usage_statistics", "enabled") is False:
+                    # If stats are disabled, then opt out is true
                     return True
-            except Exception:
+            except (ValueError, configparser.Error):
                 pass
         return False
 
@@ -695,17 +702,28 @@ class BaseDataContext(object):
         Returns:
             ValidationOperatorResult
         """
+        if not assets_to_validate:
+            raise ge_exceptions.DataContextError("No batches of data were passed in. These are required")
+
+        for batch in assets_to_validate:
+            if not isinstance(batch, (tuple, DataAsset)):
+                raise ge_exceptions.DataContextError("Batches are required to be of type DataAsset")
+        try:
+            validation_operator = self.validation_operators[validation_operator_name]
+        except KeyError:
+            raise ge_exceptions.DataContextError(f"No validation operator `{validation_operator_name}` was found in your project. Please verify this in your great_expectations.yml")
+
         if run_id is None:
             run_id = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%S.%fZ")
             logger.info("Setting run_id to: {}".format(run_id))
         if evaluation_parameters is None:
-            return self.validation_operators[validation_operator_name].run(
+            return validation_operator.run(
                 assets_to_validate=assets_to_validate,
                 run_id=run_id,
                 **kwargs
             )
         else:
-            return self.validation_operators[validation_operator_name].run(
+            return validation_operator.run(
                 assets_to_validate=assets_to_validate,
                 run_id=run_id,
                 evaluation_parameters=evaluation_parameters,
