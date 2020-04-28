@@ -1,17 +1,17 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
     rev: v2.3.0
     hooks:
-    -   id: check-yaml
+      - id: check-yaml
         exclude: tests/data_context/fixtures/bad_yml/great_expectations.yml
-    -   id: end-of-file-fixer
-    -   id: trailing-whitespace
-    - id: requirements-txt-fixer
--   repo: https://github.com/psf/black
+      - id: end-of-file-fixer
+      - id: trailing-whitespace
+      - id: requirements-txt-fixer
+  - repo: https://github.com/timothycrosley/isort
+    rev: 4.3.21-2
+    hooks:
+      - id: isort
+  - repo: https://github.com/psf/black
     rev: 19.10b0
     hooks:
-    -   id: black
-- repo: https://github.com/timothycrosley/isort
-  rev: 4.3.21-2
-  hooks:
-      - id: isort
+      - id: black
