@@ -96,8 +96,12 @@ def test_run_validation_operator_raises_error_if_no_matching_validation_operator
     )
 
 
-def test_validation_operator_evaluation_parameters(validation_operators_data_context, parameterized_expectation_suite):
-    validation_operators_data_context.save_expectation_suite(parameterized_expectation_suite, "param_suite")
+def test_validation_operator_evaluation_parameters(
+    validation_operators_data_context, parameterized_expectation_suite
+):
+    validation_operators_data_context.save_expectation_suite(
+        parameterized_expectation_suite, "param_suite"
+    )
     res = validation_operators_data_context.run_validation_operator(
         "store_val_res_and_extract_eval_params",
         assets_to_validate=[

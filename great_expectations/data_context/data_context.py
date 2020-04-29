@@ -774,15 +774,21 @@ class BaseDataContext(object):
             ValidationOperatorResult
         """
         if not assets_to_validate:
-            raise ge_exceptions.DataContextError("No batches of data were passed in. These are required")
+            raise ge_exceptions.DataContextError(
+                "No batches of data were passed in. These are required"
+            )
 
         for batch in assets_to_validate:
             if not isinstance(batch, (tuple, DataAsset)):
-                raise ge_exceptions.DataContextError("Batches are required to be of type DataAsset")
+                raise ge_exceptions.DataContextError(
+                    "Batches are required to be of type DataAsset"
+                )
         try:
             validation_operator = self.validation_operators[validation_operator_name]
         except KeyError:
-            raise ge_exceptions.DataContextError(f"No validation operator `{validation_operator_name}` was found in your project. Please verify this in your great_expectations.yml")
+            raise ge_exceptions.DataContextError(
+                f"No validation operator `{validation_operator_name}` was found in your project. Please verify this in your great_expectations.yml"
+            )
 
         if run_id is None:
             run_id = datetime.datetime.utcnow().strftime("%Y%m%dT%H%M%S.%fZ")

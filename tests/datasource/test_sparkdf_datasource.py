@@ -93,7 +93,7 @@ def test_sparkdf_datasource_custom_data_asset(
 def test_create_sparkdf_datasource(data_context, tmp_path_factory, test_backends):
     if "SparkDFDataset" not in test_backends:
         pytest.skip("Spark has not been enabled, so this test must be skipped.")
-    base_dir = tmp_path_factory.mktemp('test_create_sparkdf_datasource')
+    base_dir = tmp_path_factory.mktemp("test_create_sparkdf_datasource")
     name = "test_sparkdf_datasource"
     # type_ = "spark"
     class_name = "SparkDFDatasource"
@@ -192,20 +192,25 @@ def test_standalone_spark_parquet_datasource(
 def test_standalone_spark_csv_datasource(test_folder_connection_path, test_backends):
     if "SparkDFDataset" not in test_backends:
         pytest.skip("Spark has not been enabled, so this test must be skipped.")
-    datasource = SparkDFDatasource('SparkParquet',
-                                   batch_kwargs_generators={"subdir_reader": {
-                                        "class_name": "SubdirReaderBatchKwargsGenerator",
-                                        "base_directory": test_folder_connection_path
-                                        }
-                                    }
-                                   )
+    datasource = SparkDFDatasource(
+        "SparkParquet",
+        batch_kwargs_generators={
+            "subdir_reader": {
+                "class_name": "SubdirReaderBatchKwargsGenerator",
+                "base_directory": test_folder_connection_path,
+            }
+        },
+    )
 
-    assert datasource.get_available_data_asset_names()["subdir_reader"]["names"] == [('test', 'file')]
-    batch = datasource.get_batch(batch_kwargs={
-                                       "path": os.path.join(test_folder_connection_path,
-                                                            'test.csv'),
-                                       "reader_options": {"header": True}
-                                   })
+    assert datasource.get_available_data_asset_names()["subdir_reader"]["names"] == [
+        ("test", "file")
+    ]
+    batch = datasource.get_batch(
+        batch_kwargs={
+            "path": os.path.join(test_folder_connection_path, "test.csv"),
+            "reader_options": {"header": True},
+        }
+    )
     assert isinstance(batch, Batch)
     # NOTE: below is a great example of CSV vs. Parquet typing: pandas reads content as string, spark as int
     assert batch.data.head()["col_1"] == "1"
@@ -214,9 +219,11 @@ def test_standalone_spark_csv_datasource(test_folder_connection_path, test_backe
 def test_standalone_spark_passthrough_datasource(data_context, dataset, test_backends):
     if "SparkDFDataset" not in test_backends:
         pytest.skip("Spark has not been enabled, so this test must be skipped.")
-    datasource = data_context.add_datasource("spark_source",
-                                             module_name="great_expectations.datasource",
-                                             class_name="SparkDFDatasource")
+    datasource = data_context.add_datasource(
+        "spark_source",
+        module_name="great_expectations.datasource",
+        class_name="SparkDFDatasource",
+    )
 
     # We want to ensure that an externally-created spark DataFrame can be successfully instantiated using the
     # datasource built in a data context
@@ -329,10 +336,14 @@ def test_spark_config(test_backends):
     assert ("spark.executor.memory", "128m") in conf
 
 
-def test_pandas_datasource_processes_dataset_options(test_folder_connection_path, test_backends):
+def test_pandas_datasource_processes_dataset_options(
+    test_folder_connection_path, test_backends
+):
     if "SparkDFDataset" not in test_backends:
         pytest.skip("Spark has not been enabled, so this test must be skipped.")
-    datasource = SparkDFDatasource('PandasCSV', batch_kwargs_generators={
+    datasource = SparkDFDatasource(
+        "PandasCSV",
+        batch_kwargs_generators={
             "subdir_reader": {
                 "class_name": "SubdirReaderBatchKwargsGenerator",
                 "base_directory": test_folder_connection_path,
