@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-from collections import OrderedDict
 
 import pytest
 from ruamel.yaml import YAML
@@ -380,6 +379,7 @@ project_path/
     great_expectations/
         .gitignore
         great_expectations.yml
+        checkpoints/
         expectations/
             titanic/
                 subdir_reader/
@@ -902,6 +902,7 @@ def test_data_context_create_makes_uncommitted_dirs_when_all_are_missing(
 great_expectations/
     .gitignore
     great_expectations.yml
+    checkpoints/
     expectations/
     notebooks/
         pandas/
@@ -931,6 +932,7 @@ def test_data_context_create_does_nothing_if_all_uncommitted_dirs_exist(
 great_expectations/
     .gitignore
     great_expectations.yml
+    checkpoints/
     expectations/
     notebooks/
         pandas/
@@ -994,10 +996,26 @@ uncommitted/
     assert not DataContext.all_uncommitted_directories_exist(project_path)
 
 
-def test_data_context_create_does_not_overwrite_existing_config_variables_yml(
-    tmp_path_factory,
-):
+def test_data_context_create_builds_base_directories(tmp_path_factory):
     project_path = str(tmp_path_factory.mktemp("data_context"))
+    context = DataContext.create(project_path)
+    assert isinstance(context, DataContext)
+
+    for directory in [
+        "expectations",
+        "notebooks",
+        "plugins",
+        "checkpoints",
+        "uncommitted",
+    ]:
+        base_dir = os.path.join(project_path, context.GE_DIR, directory)
+        assert os.path.isdir(base_dir)
+
+
+def test_data_context_create_does_not_overwrite_existing_config_variables_yml(
+    tmp_path_factory
+):
+    project_path = str(tmp_path_factory.mktemp('data_context'))
     DataContext.create(project_path)
     ge_dir = os.path.join(project_path, "great_expectations")
     uncommitted_dir = os.path.join(ge_dir, "uncommitted")
@@ -1025,11 +1043,12 @@ def test_scaffold_directories_and_notebooks(tmp_path_factory):
     DataContext.scaffold_notebooks(empty_directory)
 
     assert set(os.listdir(empty_directory)) == {
-        "plugins",
-        "expectations",
-        ".gitignore",
-        "uncommitted",
-        "notebooks",
+        'plugins',
+        "checkpoints",
+        'expectations',
+        '.gitignore',
+        'uncommitted',
+        'notebooks',
     }
     assert set(os.listdir(os.path.join(empty_directory, "uncommitted"))) == {
         "data_docs",
