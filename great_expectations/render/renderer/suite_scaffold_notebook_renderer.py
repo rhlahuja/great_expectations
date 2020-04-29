@@ -66,7 +66,7 @@ included_columns = [
         self.add_markdown_cell(
             """## Save & review the scaffolded Expectation Suite
 
-Let's save the scaffolded expectation suite as a JSON file in the 
+Let's save the scaffolded expectation suite as a JSON file in the
 `great_expectations/expectations` directory of your project and rebuild the Data
  Docs site to make reviewing the scaffolded suite easy."""
         )
@@ -89,8 +89,8 @@ context.open_data_docs(validation_result_identifier)"""
         )
         self.add_markdown_cell(
             f"""## Next steps
-After you are happy with this scaffolded Expectation Suite in Data Docs you 
-should edit this suite to make finer grained adjustments to the expectations. 
+After you are happy with this scaffolded Expectation Suite in Data Docs you
+should edit this suite to make finer grained adjustments to the expectations.
 This is be done by running `great_expectations suite edit {self.suite_name}`."""
         )
 
@@ -118,15 +118,15 @@ use a jupyter keyboard shortcut to toggle each line: **Linux/Windows**:
             """## Run the scaffolder
 
 This is highly configurable depending on your goals. You can include or exclude
-columns, and include or exclude expectation types (when applicable). [The 
-Expectation Glossary](http://docs.greatexpectations.io/en/latest/expectation_glossary.html) 
+columns, and include or exclude expectation types (when applicable). [The
+Expectation Glossary](http://docs.greatexpectations.io/en/latest/expectation_glossary.html)
 contains a list of possible expectations.
 
 Note that the profiler is not very smart, so it does it's best to decide on
 applicability.
 
-**To get to a production grade suite, you should [edit this 
-suite](http://docs.greatexpectations.io/en/latest/command_line.html#great-expectations-suite-edit) 
+**To get to a production grade suite, you should [edit this
+suite](http://docs.greatexpectations.io/en/latest/command_line.html#great-expectations-suite-edit)
 after this scaffold gets you close to what you want.**"""
         )
         self._add_scaffold_cell()
@@ -144,7 +144,8 @@ after this scaffold gets you close to what you want.**"""
         self.write_notebook_to_disk(self._notebook, notebook_file_path)
 
     def _add_scaffold_cell(self):
-        self.add_code_cell("""\
+        self.add_code_cell(
+            """\
 # Wipe the suite clean to prevent unwanted expectations on the batch
 suite = context.create_expectation_suite(expectation_suite_name, overwrite_existing=True)
 batch = context.get_batch(batch_kwargs, suite)
@@ -155,4 +156,5 @@ scaffold_config = {
     # "included_expectations": [],
     # "excluded_expectations": [],
 }
-suite, evr = BasicSuiteBuilderProfiler().profile(batch, profiler_configuration=scaffold_config)""")
+suite, evr = BasicSuiteBuilderProfiler().profile(batch, profiler_configuration=scaffold_config)"""
+        )

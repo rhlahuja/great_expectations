@@ -207,8 +207,10 @@ def test_init_on_existing_project_with_no_datasources_should_continue_init_flow_
         {
             "name": "files_datasource",
             "class_name": "PandasDatasource",
-            'data_asset_type': {'class_name': 'PandasDataset',
-                                'module_name': 'great_expectations.dataset'},
+            "data_asset_type": {
+                "class_name": "PandasDataset",
+                "module_name": "great_expectations.dataset",
+            },
             "module_name": "great_expectations.datasource",
         }
     ]

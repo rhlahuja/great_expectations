@@ -27,9 +27,7 @@ def project_check_config(directory):
     is_config_ok, error_message, context = do_config_check(directory)
     if context:
         send_usage_message(
-            data_context=context,
-            event="cli.project.check_config",
-            success=True
+            data_context=context, event="cli.project.check_config", success=True
         )
     if not is_config_ok:
         cli_message("Unfortunately, your config appears to be invalid:\n")

@@ -8,9 +8,7 @@ from great_expectations.cli.util import (
     cli_message_list,
     load_data_context_with_error_handling,
 )
-from great_expectations.core.usage_statistics.usage_statistics import (
-    send_usage_message,
-)
+from great_expectations.core.usage_statistics.usage_statistics import send_usage_message
 
 
 @click.group()
@@ -45,10 +43,10 @@ def docs_build(directory, site_name, view=True):
 
 @docs.command(name="list")
 @click.option(
-    '--directory',
-    '-d',
+    "--directory",
+    "-d",
     default=None,
-    help="The project's great_expectations directory."
+    help="The project's great_expectations directory.",
 )
 def docs_list(directory):
     """List known Data Docs Sites."""
@@ -56,7 +54,9 @@ def docs_list(directory):
 
     docs_sites_url_dicts = context.get_docs_sites_urls()
     docs_sites_strings = [
-        " - <cyan>{}</cyan>: {}".format(docs_site_dict["site_name"], docs_site_dict["site_url"])\
+        " - <cyan>{}</cyan>: {}".format(
+            docs_site_dict["site_name"], docs_site_dict["site_url"]
+        )
         for docs_site_dict in docs_sites_url_dicts
     ]
 

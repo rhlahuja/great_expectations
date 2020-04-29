@@ -8,10 +8,7 @@ import click
 
 from great_expectations import DataContext
 from great_expectations import exceptions as ge_exceptions
-from great_expectations.cli.datasource import (
-    get_batch_kwargs,
-    select_datasource,
-)
+from great_expectations.cli.datasource import get_batch_kwargs, select_datasource
 from great_expectations.cli.docs import build_docs
 from great_expectations.cli.util import cli_message
 from great_expectations.core import ExpectationSuite
@@ -82,8 +79,10 @@ def create_expectation_suite(
             batch_kwargs, generator_asset
         )
         while True:
-            expectation_suite_name = click.prompt("\nName the new expectation suite",
-                                                  default=default_expectation_suite_name)
+            expectation_suite_name = click.prompt(
+                "\nName the new expectation suite",
+                default=default_expectation_suite_name,
+            )
             if expectation_suite_name in context.list_expectation_suite_names():
                 tell_user_suite_exists(expectation_suite_name)
             else:
@@ -124,8 +123,8 @@ def _profile_to_create_a_suite(
     click.prompt(
         """
 Great Expectations will choose a couple of columns and generate expectations about them
-to demonstrate some examples of assertions you can make about your data. 
-    
+to demonstrate some examples of assertions you can make about your data.
+
 Press Enter to continue
 """,
         default=True,
@@ -156,7 +155,7 @@ def _raise_profiling_errors(profiling_results):
         == DataContext.PROFILING_ERROR_CODE_SPECIFIED_DATA_ASSETS_NOT_FOUND
     ):
         raise ge_exceptions.DataContextError(
-            """Some of the data assets you specified were not found: {0:s}    
+            """Some of the data assets you specified were not found: {0:s}
             """.format(
                 ",".join(profiling_results["error"]["not_found_data_assets"])
             )
@@ -204,7 +203,9 @@ def tell_user_suite_exists(suite_name: str) -> None:
     )
 
 
-def create_empty_suite(context: DataContext, expectation_suite_name: str, batch_kwargs) -> None:
+def create_empty_suite(
+    context: DataContext, expectation_suite_name: str, batch_kwargs
+) -> None:
     suite = context.create_expectation_suite(expectation_suite_name)
     suite.add_citation(comment="New suite added via CLI", batch_kwargs=batch_kwargs)
     context.save_expectation_suite(suite, expectation_suite_name)
@@ -214,7 +215,11 @@ def launch_jupyter_notebook(notebook_path: str) -> None:
     subprocess.call(["jupyter", "notebook", notebook_path])
 
 
-def load_batch(context: DataContext, suite: Union[str, ExpectationSuite], batch_kwargs: Union[dict, BatchKwargs]) -> DataAsset:
+def load_batch(
+    context: DataContext,
+    suite: Union[str, ExpectationSuite],
+    batch_kwargs: Union[dict, BatchKwargs],
+) -> DataAsset:
     batch: DataAsset = context.get_batch(batch_kwargs, suite)
     assert isinstance(
         batch, DataAsset

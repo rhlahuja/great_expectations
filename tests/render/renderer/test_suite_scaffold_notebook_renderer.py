@@ -16,9 +16,7 @@ def test_render_snapshot_test(titanic_data_context):
     csv_path = batch_kwargs["path"]
     suite_name = "my_suite"
     suite = titanic_data_context.create_expectation_suite(suite_name)
-    renderer = SuiteScaffoldNotebookRenderer(
-        titanic_data_context, suite, batch_kwargs
-    )
+    renderer = SuiteScaffoldNotebookRenderer(titanic_data_context, suite, batch_kwargs)
     obs = renderer.render(None)
     assert isinstance(obs, nbformat.NotebookNode)
     ## NOTE!!! - When updating this snapshot be sure to include the dynamic
@@ -140,9 +138,7 @@ def test_notebook_execution_with_pandas_backend(titanic_data_context):
     assert not os.path.isfile(notebook_path)
 
     # Create notebook
-    renderer = SuiteScaffoldNotebookRenderer(
-        titanic_data_context, suite, batch_kwargs
-    )
+    renderer = SuiteScaffoldNotebookRenderer(titanic_data_context, suite, batch_kwargs)
     renderer.render_to_disk(notebook_path)
     assert os.path.isfile(notebook_path)
 

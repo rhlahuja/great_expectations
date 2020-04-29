@@ -76,5 +76,3 @@ Now, when your operator is executed, the requested metrics will be available in 
 .. code-block:: python
 
     context.run_validation_operator('action_list_operator', (batch_kwargs, expectation_suite_name))
-
-

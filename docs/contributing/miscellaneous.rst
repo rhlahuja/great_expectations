@@ -43,7 +43,7 @@ GE core team members use this checklist to ship releases.
 * Update the ``changelog.rst``: move all things under ``develop`` under a new heading with the new release number.
 * Submit this as a PR against ``develop``
 * After successful checks, get it approved and merged.
-* Update your local branches and switch to master: ``git fetch --all; git checkout master; git pull``. 
+* Update your local branches and switch to master: ``git fetch --all; git checkout master; git pull``.
 * Merge the now-updated ``develop`` branch into ``master`` and trigger the release: ``git merge origin/develop; git push``
 * Wait for all the builds to complete (including the deploy job).
 * Check `PyPI <https://pypi.org/project/great-expectations/#history>`__ for the new release
@@ -57,4 +57,3 @@ GE core team members use this checklist to ship releases.
 * `Create the release on GitHub <https://github.com/great-expectations/great_expectations/releases>`__ with the version number. Copy the changelog notes into the release notes, and update any rst-specific links to use github issue numbers.
 * Notify kyle@superconductive.com about any community-contributed PRs that should be celebrated.
 * Socialize the release on GE slack by copying the changelog with an optional nice personal message (thank people if you can)
-

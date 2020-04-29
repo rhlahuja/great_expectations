@@ -21,5 +21,3 @@ Building custom expectations is easy and allows your custom logic to become part
 even profiling workflows that make Great Expectations stand out. See the guide on :ref:`custom_expectations_reference`
 for more information on building expectations and updating DataContext configurations to automatically load batches
 of data with custom Data Assets.
-
-

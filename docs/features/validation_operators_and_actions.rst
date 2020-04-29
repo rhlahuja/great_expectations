@@ -126,5 +126,3 @@ An action is a way to take an arbitrary method and make it configurable and runn
 The only requirement from an action is for it to have a take_action method.
 
 GE comes with a list of actions that we consider useful and you can reuse in your pipelines. Most of them take in validation results and do something with them.
-
-

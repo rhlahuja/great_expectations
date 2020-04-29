@@ -29,5 +29,3 @@ DataContext
     :members:
     :undoc-members:
     :show-inheritance:
-
-

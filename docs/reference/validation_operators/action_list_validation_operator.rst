@@ -71,7 +71,7 @@ The `run` method returns an object that looks like this:
     {
         'success: True/False, (True if all validations are successful)
         'details': {
-            great_expectations.data_context.types.ExpectationSuiteIdentifier: 
+            great_expectations.data_context.types.ExpectationSuiteIdentifier:
                 {
                 'validation_result': :ref:validation_result
                 'actions_results':

@@ -81,5 +81,3 @@ Dynamically adjusting interactive evaluation
         }
       }
     }
-
-

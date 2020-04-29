@@ -31,5 +31,3 @@ Batch Id
 ******************
 Batch Fingerprint
 ******************
-
-

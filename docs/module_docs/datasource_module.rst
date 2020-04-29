@@ -41,5 +41,3 @@ SparkDFDatasource
     :members:
     :undoc-members:
     :show-inheritance:
-
-

@@ -40,11 +40,11 @@ These guidelines should be followed consistently for methods and variables expos
 **File names and RST refs**
 
 * File names should parallel titles, so that URLs and titles are similar. Use snake case for file names.
-    
+
     * For example: the page titled ``Initialize a project`` has this filename: ``initialize_a_project.rst``, which produces this URL: ``initialize_a_project.html``
 
 * Refs are ``_{filename}`` or ``_{folder_name}__{filename}``.
-    
+
     * Ex: `_getting_started__initialize_a_project`
 
 

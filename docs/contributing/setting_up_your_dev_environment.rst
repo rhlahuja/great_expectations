@@ -78,7 +78,7 @@ Depending on which features of Great Expectations you want to work on, you may w
 
         .. code-block::
 
-                    Name                       Command              State           Ports         
+                    Name                       Command              State           Ports
             ———————————————————————————————————————————
             postgresql_travis_db_1   docker-entrypoint.sh postgres   Up      0.0.0.0:5432->5432/tcp
 
@@ -95,7 +95,7 @@ Depending on which features of Great Expectations you want to work on, you may w
             could not connect to server: Connection refused
                 Is the server running on host "localhost" (127.0.0.1) and accepting
                 TCP/IP connections on port 5432?
-        
+
     * Or this...
 
         .. code-block::
@@ -124,4 +124,3 @@ Start coding!
 -----------------------------------------
 
 At this point, you have everything you need to start coding!
-
