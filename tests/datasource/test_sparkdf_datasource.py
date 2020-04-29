@@ -90,9 +90,10 @@ def test_sparkdf_datasource_custom_data_asset(
     assert res.success is True
 
 
-def test_create_sparkdf_datasource(data_context, tmp_path_factory):
-    pyspark_skip = pytest.importorskip("pyspark")
-    base_dir = tmp_path_factory.mktemp("test_create_sparkdf_datasource")
+def test_create_sparkdf_datasource(data_context, tmp_path_factory, test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
+    base_dir = tmp_path_factory.mktemp('test_create_sparkdf_datasource')
     name = "test_sparkdf_datasource"
     # type_ = "spark"
     class_name = "SparkDFDatasource"
@@ -188,39 +189,34 @@ def test_standalone_spark_parquet_datasource(
     assert batch.data.count() == 2
 
 
-def test_standalone_spark_csv_datasource(test_folder_connection_path):
-    pyspark_skip = pytest.importorskip("pyspark")
-    datasource = SparkDFDatasource(
-        "SparkParquet",
-        batch_kwargs_generators={
-            "subdir_reader": {
-                "class_name": "SubdirReaderBatchKwargsGenerator",
-                "base_directory": test_folder_connection_path,
-            }
-        },
-    )
+def test_standalone_spark_csv_datasource(test_folder_connection_path, test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
+    datasource = SparkDFDatasource('SparkParquet',
+                                   batch_kwargs_generators={"subdir_reader": {
+                                        "class_name": "SubdirReaderBatchKwargsGenerator",
+                                        "base_directory": test_folder_connection_path
+                                        }
+                                    }
+                                   )
 
-    assert datasource.get_available_data_asset_names()["subdir_reader"]["names"] == [
-        ("test", "file")
-    ]
-    batch = datasource.get_batch(
-        batch_kwargs={
-            "path": os.path.join(test_folder_connection_path, "test.csv"),
-            "reader_options": {"header": True},
-        }
-    )
+    assert datasource.get_available_data_asset_names()["subdir_reader"]["names"] == [('test', 'file')]
+    batch = datasource.get_batch(batch_kwargs={
+                                       "path": os.path.join(test_folder_connection_path,
+                                                            'test.csv'),
+                                       "reader_options": {"header": True}
+                                   })
     assert isinstance(batch, Batch)
     # NOTE: below is a great example of CSV vs. Parquet typing: pandas reads content as string, spark as int
     assert batch.data.head()["col_1"] == "1"
 
 
-def test_standalone_spark_passthrough_datasource(data_context, dataset):
-    pyspark_skip = pytest.importorskip("pyspark")
-    datasource = data_context.add_datasource(
-        "spark_source",
-        module_name="great_expectations.datasource",
-        class_name="SparkDFDatasource",
-    )
+def test_standalone_spark_passthrough_datasource(data_context, dataset, test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
+    datasource = data_context.add_datasource("spark_source",
+                                             module_name="great_expectations.datasource",
+                                             class_name="SparkDFDatasource")
 
     # We want to ensure that an externally-created spark DataFrame can be successfully instantiated using the
     # datasource built in a data context
@@ -251,8 +247,9 @@ def test_standalone_spark_passthrough_datasource(data_context, dataset):
             assert "Unrecognized batch_kwargs for spark_source" in exc.value.message
 
 
-def test_invalid_reader_sparkdf_datasource(tmp_path_factory):
-    pytest.importorskip("pyspark")
+def test_invalid_reader_sparkdf_datasource(tmp_path_factory, test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
     basepath = str(tmp_path_factory.mktemp("test_invalid_reader_sparkdf_datasource"))
     datasource = SparkDFDatasource(
         "mysparksource",
@@ -309,8 +306,9 @@ def test_invalid_reader_sparkdf_datasource(tmp_path_factory):
     assert batch.data.head()["a"] == "1"
 
 
-def test_spark_config():
-    pytest.importorskip("pyspark")
+def test_spark_config(test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
     source = SparkDFDatasource()
     conf = source.spark.sparkContext.getConf().getAll()
     # Without specifying any spark_config values we get defaults
@@ -331,11 +329,10 @@ def test_spark_config():
     assert ("spark.executor.memory", "128m") in conf
 
 
-def test_pandas_datasource_processes_dataset_options(test_folder_connection_path):
-    pytest.importorskip("pyspark")
-    datasource = SparkDFDatasource(
-        "PandasCSV",
-        batch_kwargs_generators={
+def test_pandas_datasource_processes_dataset_options(test_folder_connection_path, test_backends):
+    if "SparkDFDataset" not in test_backends:
+        pytest.skip("Spark has not been enabled, so this test must be skipped.")
+    datasource = SparkDFDatasource('PandasCSV', batch_kwargs_generators={
             "subdir_reader": {
                 "class_name": "SubdirReaderBatchKwargsGenerator",
                 "base_directory": test_folder_connection_path,
